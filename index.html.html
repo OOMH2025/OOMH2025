@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甲状腺機能低下症 症状チェックリスト</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .level-section {
+            margin-bottom: 30px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .level-section.has-checked {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .level-header {
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .level-1 { background: linear-gradient(135deg, #8BC34A, #689F38); }
+        .level-2 { background: linear-gradient(135deg, #FFEB3B, #F57F17); color: #333; }
+        .level-3 { background: linear-gradient(135deg, #FF9800, #E65100); }
+        .level-4 { background: linear-gradient(135deg, #FF5722, #D84315); }
+        .level-5 { background: linear-gradient(135deg, #F44336, #B71C1C); }
+        .level-6 { background: linear-gradient(135deg, #9C27B0, #4A148C); }
+
+        .level-title {
+            font-size: 18px;
+        }
+
+        .symptom-count {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .symptoms-list {
+            padding: 20px;
+        }
+
+        .symptom-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .symptom-item:hover {
+            background: #f0f8ff;
+        }
+
+        .symptom-item.checked {
+            background: #e8f5e8;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .symptom-checkbox {
+            margin-right: 12px;
+            transform: scale(1.2);
+            accent-color: #667eea;
+        }
+
+        .symptom-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .activity-guide {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .activity-guide h4 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .activity-guide p {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .summary {
+            position: sticky;
+            top: 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .summary h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .current-level {
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 25px;
+            color: white;
+            margin: 10px 0;
+            display: inline-block;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+
+        .emergency {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #721c24;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>甲状腺機能低下症 症状チェックリスト</h1>
+            <p>該当する症状にチェックを入れて、現在の状態を確認しましょう</p>
+        </div>
+
+        <div class="content">
+            <div class="level-section" data-level="1">
+                <div class="level-header level-1">
+                    <span class="level-title">レベル 1: ごく軽微な症状</span>
+                    <span class="symptom-count">0/5</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">なんとなく体がだるい、疲れやすい（一晩休めば回復する程度）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">以前より少し寒がりになったかもしれない</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">時々便秘気味になる</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">肌が少し乾燥する時がある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">集中力が僅かに落ちたように感じる時がある</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p>日常生活、通常の仕事や家事はほぼ問題なく行えます。無理のない範囲で活動し、疲れを感じたら早めに休息を取るように心がけましょう。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-section" data-level="2">
+                <div class="level-header level-2">
+                    <span class="level-title">レベル 2: 軽度の症状</span>
+                    <span class="symptom-count">0/7</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">倦怠感が以前よりはっきりし、回復に時間がかかるようになった</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">寒がりがはっきりし、重ね着をすることが増えた</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">便秘が続くことがある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">むくみを感じることがある（特に朝や夕方、指輪がきついなど）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">肌の乾燥が気になり、かさつく</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">集中力の低下や物忘れを自覚することが増えた</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">気分が少し落ち込みやすい、やる気が出にくい時がある</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p>日常生活は概ね可能ですが、疲れやすさを考慮したペース配分が必要です。仕事は業務量の調整や負担の少ない作業への変更を検討し、家事も完璧を目指さず工夫しましょう。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-section" data-level="3">
+                <div class="level-header level-3">
+                    <span class="level-title">レベル 3: 中等度の症状 (Ⅰ)</span>
+                    <span class="symptom-count">0/8</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">明らかな全身倦怠感があり、日中の活動量が低下し始める</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">強い冷えを感じ、厚着をしても温まりにくい</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">むくみがはっきりし、顔つきが腫れぼったくなったり、手足がむくんだりする</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">体重が増加しやすくなる（食事量は変わらないか減っているのに）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">髪の毛が抜けやすくなる、髪質がパサつく</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">声が少し低くなったり、かすれたりすることがある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">皮膚が乾燥し、蒼白に見えることがある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">思考力や記憶力の低下を自覚し、仕事や家事に影響が出始める</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p>時短勤務や在宅勤務の活用、一時的な休職を検討する必要があります。家事も家族の協力や外部サービスの利用が必要です。医師の指示のもと、治療に専念し十分な休養をとることが優先されます。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-section" data-level="4">
+                <div class="level-header level-4">
+                    <span class="level-title">レベル 4: 中等度の症状 (Ⅱ)</span>
+                    <span class="symptom-count">0/9</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">強い全身倦怠感のため、日中の活動がかなり制限される。横になっている時間が長くなる</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">寒くて動くのが億劫になる</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">むくみが著明で、顔全体や手足がパンパンになることがある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">体重増加が続く</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">脱毛が目立ち、眉毛の外側が薄くなることもある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">声がかすれて聞き取りにくくなったり、ろれつが回りにくくなったりする</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">無気力で、何事にも興味が持てなくなる。抑うつ状態がはっきりする</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">記憶力や記銘力の低下が著しく、日常生活に支障をきたす</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">脈がかなりゆっくりになる（徐脈）。動作時に息切れを感じやすくなる</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p>仕事は休職し、治療と休養に専念することが望ましい段階です。家事もごく身の回りの簡単なこと以外は家族や周囲のサポートが不可欠です。栄養バランスの取れた食事と十分な睡眠を確保することが非常に重要です。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-section" data-level="5">
+                <div class="level-header level-5">
+                    <span class="level-title">レベル 5: 重度の症状（粘液水腫の兆候など）</span>
+                    <span class="symptom-count">0/6</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">著しい倦怠感で、起き上がっているのが困難。ほぼ寝たきりに近い状態になることもある</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">傾眠傾向が強く、日中もうとうとして過ごすことが多い。呼びかけへの反応が鈍くなる</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">明らかな低体温（35℃台など）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">心機能低下の兆候がはっきりする（強い息切れ、脈が極端に遅い、胸が苦しいなど）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">食欲が全くなく、吐き気を伴うこともある。腸の動きが悪く、頑固な便秘になる</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">全身の強いむくみ</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p><strong>入院加療が必要となる可能性が高い状態です。</strong>自宅療養の場合でも、医師の厳重な管理のもと、絶対安静が必要です。仕事や家事は完全に不可能です。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-section" data-level="6">
+                <div class="level-header level-6">
+                    <span class="level-title">レベル 6: 緊急を要する重篤な状態（粘液水腫性昏睡など）</span>
+                    <span class="symptom-count">0/4</span>
+                </div>
+                <div class="symptoms-list">
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">意識レベルが著しく低下し、昏睡状態に陥る</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">けいれん発作を起こす</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">呼吸が非常に浅く、回数も減る（呼吸困難・呼吸不全）</span>
+                    </div>
+                    <div class="symptom-item">
+                        <input type="checkbox" class="symptom-checkbox">
+                        <span class="symptom-text">著しい低体温、低血圧、ショック状態</span>
+                    </div>
+                    <div class="activity-guide">
+                        <h4>活動の目安</h4>
+                        <p><strong style="color: #d32f2f;">直ちに救急医療による専門的な治療が必要です。生命に関わる危険な状態です。</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h3>現在の推定レベル</h3>
+                <div class="current-level level-1" id="currentLevel">レベル 1: ごく軽微な症状</div>
+                <p id="levelDescription">該当する症状にチェックを入れてください</p>
+                
+                <div id="warningMessage"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateChecklist() {
+            // 各レベルのチェック数をカウント
+            for (let level = 1; level <= 6; level++) {
+                const section = document.querySelector(`[data-level="${level}"]`);
+                if (!section) continue;
+                
+                const checkboxes = section.querySelectorAll('.symptom-checkbox');
+                const checkedCount = section.querySelectorAll('.symptom-checkbox:checked').length;
+                const countElement = section.querySelector('.symptom-count');
+                
+                if (countElement) {
+                    countElement.textContent = `${checkedCount}/${checkboxes.length}`;
+                }
+                
+                // セクションの見た目を更新
+                if (checkedCount > 0) {
+                    section.classList.add('has-checked');
+                } else {
+                    section.classList.remove('has-checked');
+                }
+            }
+            
+            // 現在のレベルを判定
+            let currentLevel = 1;
+            let maxScore = 0;
+            
+            for (let level = 6; level >= 1; level--) {
+                const section = document.querySelector(`[data-level="${level}"]`);
+                if (!section) continue;
+                
+                const checkboxes = section.querySelectorAll('.symptom-checkbox');
+                const checkedCount = section.querySelectorAll('.symptom-checkbox:checked').length;
+                const score = checkedCount / checkboxes.length;
+                
+                // 重症レベル（4以上）で症状があれば優先
+                if (level >= 4 && checkedCount > 0) {
+                    currentLevel = level;
+                    break;
+                }
+                
+                // 30%以上の症状があり、最高スコアなら採用
+                if (score >= 0.3 && score > maxScore) {
+                    currentLevel = level;
+                    maxScore = score;
+                }
+            }
+            
+            // レベル表示を更新
+            const levelNames = ['', 'ごく軽微な症状', '軽度の症状', '中等度の症状 (Ⅰ)', '中等度の症状 (Ⅱ)', '重度の症状', '緊急を要する重篤な状態'];
+            const levelClasses = ['', 'level-1', 'level-2', 'level-3', 'level-4', 'level-5', 'level-6'];
+            
+            const currentLevelElement = document.getElementById('currentLevel');
+            const levelDescriptionElement = document.getElementById('levelDescription');
+            const warningMessageElement = document.getElementById('warningMessage');
+            
+            if (currentLevelElement) {
+                currentLevelElement.textContent = `レベル ${currentLevel}: ${levelNames[currentLevel]}`;
+                currentLevelElement.className = `current-level ${levelClasses[currentLevel]}`;
+            }
+            
+            // 警告メッセージ
+            if (warningMessageElement) {
+                warningMessageElement.innerHTML = '';
+                
+                if (currentLevel >= 5) {
+                    warningMessageElement.innerHTML = '<div class="emergency">⚠️ 緊急事態: 直ちに医療機関を受診してください。生命に関わる可能性があります。</div>';
+                } else if (currentLevel >= 3) {
+                    warningMessageElement.innerHTML = '<div class="warning">⚠️ 重要: 早急に医師の診察を受けることをお勧めします。治療と休養が必要な状態です。</div>';
+                } else if (currentLevel >= 2) {
+                    warningMessageElement.innerHTML = '<div class="warning">💡 注意: 症状が続く場合は医師にご相談ください。定期的な検査を受けることをお勧めします。</div>';
+                }
+            }
+            
+            // 説明文
+            const descriptions = ['', '軽微な症状がある状態です。無理をせず、体調管理に気をつけましょう。', '軽度の症状がある状態です。ペース配分を考えた生活を心がけましょう。', '中等度の症状がある状態です。医師の指導のもと、治療に専念しましょう。', '中等度の症状がある状態です。休職を検討し、十分な休養が必要です。', '重度の症状がある状態です。入院加療が必要な可能性があります。', '緊急を要する重篤な状態です。直ちに救急医療が必要です。'];
+            
+            if (levelDescriptionElement) {
+                levelDescriptionElement.textContent = descriptions[currentLevel] || '該当する症状にチェックを入れてください';
+            }
+        }
+        
+        // チェックボックスにイベントを設定
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('symptom-checkbox')) {
+                const item = e.target.closest('.symptom-item');
+                if (item) {
+                    if (e.target.checked) {
+                        item.classList.add('checked');
+                    } else {
+                        item.classList.remove('checked');
+                    }
+                }
+                updateChecklist();
+            }
+        });
+        
+        // 初期化
+        updateChecklist();
+    </script>
+</body>
+</html>
